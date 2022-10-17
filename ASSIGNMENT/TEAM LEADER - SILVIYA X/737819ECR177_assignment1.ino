@@ -1,0 +1,47 @@
+// C++ code
+//
+#include<Servo.h>
+Servo s;
+void setup()
+{
+  pinMode(13,OUTPUT);
+  pinMode(12,OUTPUT);
+  pinMode(9,OUTPUT);
+  s.attach(5);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  double x=analogRead(A5);
+  double y=(((x/1024)*5)-0.5)*100;
+  if(y>35)
+  {
+    Serial.println("FAN IS ON");
+    tone(12,5);
+    digitalWrite(13,1);
+  }
+  else
+  {
+    Serial.println("FAN IS OFF");
+    noTone(12);
+    digitalWrite(13,0);
+  }
+  
+  int a=digitalRead(4);
+  if(a==1)
+  {
+    Serial.println("DOOR IS OPEN");
+    digitalWrite(9,1);
+    for(int i=0;i<=180;i++)
+  {
+    s.write(i);
+  }
+  }
+  else
+  {
+    Serial.println("DOOR IS CLOSED");
+    digitalWrite(9,0);
+  }
+  delay(1000);
+}
